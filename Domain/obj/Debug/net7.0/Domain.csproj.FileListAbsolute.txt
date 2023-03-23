@@ -1,0 +1,12 @@
+/Users/karolgrzesiak/Projects/Avinor/Domain/bin/Debug/net7.0/Domain.deps.json
+/Users/karolgrzesiak/Projects/Avinor/Domain/bin/Debug/net7.0/Domain.dll
+/Users/karolgrzesiak/Projects/Avinor/Domain/bin/Debug/net7.0/Domain.pdb
+/Users/karolgrzesiak/Projects/Avinor/Domain/obj/Debug/net7.0/Domain.csproj.AssemblyReference.cache
+/Users/karolgrzesiak/Projects/Avinor/Domain/obj/Debug/net7.0/Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/karolgrzesiak/Projects/Avinor/Domain/obj/Debug/net7.0/Domain.AssemblyInfoInputs.cache
+/Users/karolgrzesiak/Projects/Avinor/Domain/obj/Debug/net7.0/Domain.AssemblyInfo.cs
+/Users/karolgrzesiak/Projects/Avinor/Domain/obj/Debug/net7.0/Domain.csproj.CoreCompileInputs.cache
+/Users/karolgrzesiak/Projects/Avinor/Domain/obj/Debug/net7.0/Domain.dll
+/Users/karolgrzesiak/Projects/Avinor/Domain/obj/Debug/net7.0/refint/Domain.dll
+/Users/karolgrzesiak/Projects/Avinor/Domain/obj/Debug/net7.0/Domain.pdb
+/Users/karolgrzesiak/Projects/Avinor/Domain/obj/Debug/net7.0/ref/Domain.dll
