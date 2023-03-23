@@ -1,4 +1,3 @@
-using Application.Flights.Queries.Views;
 using MediatR;
 
 namespace Application.Flights.Queries;

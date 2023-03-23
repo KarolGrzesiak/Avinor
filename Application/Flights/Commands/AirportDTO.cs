@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace Infrastructure.DTOs;
+namespace Application.Flights.Commands;
 
 public record AirportDTO
 {

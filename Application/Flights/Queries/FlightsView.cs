@@ -1,4 +1,4 @@
-namespace Application.Flights.Queries.Views;
+namespace Application.Flights.Queries;
 
 public record FlightsView
 {

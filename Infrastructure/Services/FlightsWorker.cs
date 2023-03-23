@@ -35,7 +35,8 @@ internal class FlightsWorker : BackgroundService
                 var result = await _avinorClient.GetFlightsAsync(airport.Code, lastCall, stoppingToken);
                 using var scope = _serviceProvider.CreateScope();
                 var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-                await mediator.Send(new ProcessFlights(airport.Code, result.ToDomainModel()), stoppingToken);
+                await mediator.Send(new ProcessFlights(airport.Code, result),
+                    stoppingToken);
             }
 
 

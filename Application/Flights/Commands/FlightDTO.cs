@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 
-namespace Infrastructure.DTOs;
+namespace Application.Flights.Commands;
 
 public record FlightDTO
 {
@@ -13,7 +13,7 @@ public record FlightDTO
 
     [XmlElement("arr_dep")] public string ArrDep { get; set; }
 
-    [XmlElement("airport")] public string AirportCode { get; set; }
+    [XmlElement("airport")] public string SourceOrDestinationAirport { get; set; }
 
     [XmlElement("airline")] public string AirlineCode { get; set; }
 
@@ -23,5 +23,5 @@ public record FlightDTO
 
     [XmlElement("gate")] public string Gate { get; set; }
 
-    [XmlElement("status")] public FlightStatusDTO StatusDto { get; set; }
+    [XmlElement("status")] public FlightStatusDTO? StatusDto { get; set; }
 }

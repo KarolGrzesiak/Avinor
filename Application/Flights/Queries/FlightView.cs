@@ -1,8 +1,7 @@
-using Application.Flights.Events;
 using Domain;
 using Domain.Events;
 
-namespace Application.Flights.Queries.Views;
+namespace Application.Flights.Queries;
 
 public class FlightView
 {
@@ -22,7 +21,7 @@ public class FlightView
         Id = @event.Id;
     }
 
-    public long Id { get; set; }
+    public string Id { get; set; }
     public string DestinationOrSourceAirport { get; set; }
     public string Date { get; set; }
     public string AirLine { get; set; }

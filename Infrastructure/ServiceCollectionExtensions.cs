@@ -1,7 +1,11 @@
+using Application.Common;
 using Application.Flights.Commands;
 using Application.Flights.Queries;
-using Application.Flights.Queries.Views;
+using Domain.Repositories;
 using Infrastructure.Clients;
+using Infrastructure.Projections.Flights;
+using Infrastructure.Queries.Flights;
+using Infrastructure.Repositories;
 using Infrastructure.Services;
 using Marten;
 using Marten.Events;
@@ -29,6 +33,8 @@ public static class ServiceCollectionExtensions
                     httpClient.BaseAddress = new Uri("https://flydata.avinor.no/XmlFeed.asp?TimeFrom=1&TimeTo=24");
                 })
             .AddPolicyHandler(GetRetryPolicy());
+        services.AddScoped<IFlightsRepository, FlightsRepository>();
+        services.AddScoped<IEventProcessor, EventProcessor>();
         services.AddMarten(options =>
         {
             options.AutoCreateSchemaObjects = AutoCreate.All;
@@ -39,7 +45,9 @@ public static class ServiceCollectionExtensions
             options.Schema.For<FlightsView>().Identity(f => f.Airport);
         }).UseLightweightSessions().AddAsyncDaemon(DaemonMode.Solo);
 
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(ProcessFlights)));
+        services.AddMediatR(cfg =>
+            cfg.RegisterServicesFromAssemblyContaining(typeof(ProcessFlightsHandler))
+                .RegisterServicesFromAssemblyContaining(typeof(GetFlightsHandler)));
         return services;
     }
 

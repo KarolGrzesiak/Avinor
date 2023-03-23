@@ -1,17 +1,12 @@
+using Application.Flights.Commands;
 using Domain;
-using Infrastructure.DTOs;
+using Domain.Entities;
 
-namespace Infrastructure;
+namespace Application.Common;
 
 internal static class Extensions
 {
-    public static IReadOnlyCollection<Flight> ToDomainModel(this IReadOnlyCollection<FlightDTO> flights)
-    {
-        return flights.Select(f => new Flight(f.UniqueId, f.FlightId, f.AirlineCode, f.ScheduleTime, MapFlightType(f.ArrDep),
-            f.AirportCode, MapFlightStatus(f.StatusDto))).ToList();
-    }
-
-    private static FlightStatus? MapFlightStatus(FlightStatusDTO? flightStatus)
+    public static FlightStatus? MapFlightStatus(this FlightStatusDTO? flightStatus)
     {
         if (flightStatus?.Code is null)
         {
@@ -28,7 +23,7 @@ internal static class Extensions
         };
     }
 
-    private static FlightType MapFlightType(string flightTypeCode)
+    public static FlightType MapFlightType(this string flightTypeCode)
     {
         return flightTypeCode == "A" ? FlightType.Arrival : FlightType.Departure;
     }

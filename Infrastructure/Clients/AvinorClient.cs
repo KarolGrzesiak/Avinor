@@ -1,8 +1,8 @@
 using System.Xml;
 using System.Xml.Serialization;
 using Application;
+using Application.Flights.Commands;
 using Flurl;
-using Infrastructure.DTOs;
 
 namespace Infrastructure.Clients;
 

@@ -1206,7 +1206,6 @@
       "Application/1.0.0": {
         "dependencies": {
           "Domain": "1.0.0",
-          "Marten": "6.0.0-alpha.10",
           "MediatR": "12.0.1"
         },
         "runtime": {

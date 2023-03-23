@@ -1,4 +1,4 @@
-using Infrastructure.DTOs;
+using Application.Flights.Commands;
 
 namespace Infrastructure.Clients;
 

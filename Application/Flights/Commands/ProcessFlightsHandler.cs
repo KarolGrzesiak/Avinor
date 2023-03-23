@@ -1,49 +1,60 @@
-using Application.Flights.Events;
+using Application.Common;
 using Domain;
-using Domain.Events;
-using Marten;
+using Domain.Entities;
+using Domain.Repositories;
 using MediatR;
 
 namespace Application.Flights.Commands;
 
 public class ProcessFlightsHandler : IRequestHandler<ProcessFlights>
 {
-    private readonly IDocumentSession _session;
-    private readonly IMediator _mediator;
+    private readonly IFlightsRepository _repository;
+    private readonly IEventProcessor _eventProcessor;
 
-    public ProcessFlightsHandler(IDocumentSession session, IMediator mediator)
+    public ProcessFlightsHandler(IFlightsRepository repository, IEventProcessor eventProcessor)
     {
-        _session = session;
-        _mediator = mediator;
+        _repository = repository;
+        _eventProcessor = eventProcessor;
     }
 
     public async Task Handle(ProcessFlights request, CancellationToken cancellationToken)
     {
         foreach (var flight in request.Flights)
         {
-            var metadata = await _session.Events.FetchStreamStateAsync(flight.Id.ToString(), cancellationToken);
-            if (metadata is null)
+            var existingFlight = await _repository.LoadAsync(flight.UniqueId.ToString(), null, cancellationToken);
+            if (existingFlight is null)
             {
-                await _mediator.Publish(new FlightCreated(flight.Id, flight.FlightId, request.Airport, flight.Airline,
-                    flight.ScheduleTime, flight.Type,
-                    flight.SourceOrDestinationAirport, flight.Status), cancellationToken);
+                existingFlight = new Flight(flight.UniqueId.ToString(), flight.FlightId, request.Airport,
+                    flight.AirlineCode,
+                    flight.ScheduleTime,
+                    flight.ArrDep.MapFlightType(),
+                    flight.SourceOrDestinationAirport, flight.StatusDto.MapFlightStatus());
             }
-            else if (flight.Status is not null)
+            else if (flight.StatusDto is not null)
             {
-                INotification @event = flight.Status switch
+                switch (flight.StatusDto.MapFlightStatus())
                 {
-                    FlightStatus.Arrived => new FlightArrived(flight.Id, flight.FlightId, request.Airport),
-                    FlightStatus.Canceled => new FlightCancelled(flight.Id, flight.FlightId, request.Airport),
-                    FlightStatus.Departed => new FlightDeparted(flight.Id, flight.FlightId, request.Airport),
-                    FlightStatus.NewInfo => new FlightInfoChanged(flight.Id, flight.FlightId, request.Airport,
-                        flight.Airline, flight.ScheduleTime,
-                        flight.Type,
-                        flight.SourceOrDestinationAirport, flight.Status),
-                    FlightStatus.NewTime => new FlightTimeChanged(flight.Id, flight.FlightId, request.Airport,
-                        flight.ScheduleTime)
-                };
-                await _mediator.Publish(@event, cancellationToken);
+                    case FlightStatus.Arrived:
+                        existingFlight.SetAsArrived();
+                        break;
+                    case FlightStatus.Canceled:
+                        existingFlight.Cancel();
+                        break;
+                    case FlightStatus.Departed:
+                        existingFlight.SetAsDeparted();
+                        break;
+                    case FlightStatus.NewInfo:
+                        existingFlight.ChangeInfo(flight.FlightId, request.Airport, flight.AirlineCode,
+                            flight.ScheduleTime, flight.ArrDep.MapFlightType(), FlightStatus.NewInfo,
+                            flight.SourceOrDestinationAirport);
+                        break;
+                    case FlightStatus.NewTime:
+                        existingFlight.ChangeTime(flight.ScheduleTime);
+                        break;
+                }
             }
+
+            await _eventProcessor.ProcessAsync(existingFlight, cancellationToken);
         }
     }
 }

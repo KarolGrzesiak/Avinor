@@ -1,10 +1,10 @@
-using Application.Flights.Queries.Views;
+using Application.Flights.Queries;
 using Marten;
 using MediatR;
 
-namespace Application.Flights.Queries;
+namespace Infrastructure.Queries.Flights;
 
-public class GetFlightsHandler : IRequestHandler<GetFlights, FlightsView>
+internal class GetFlightsHandler : IRequestHandler<GetFlights, FlightsView>
 {
     private readonly IQuerySession _session;
 

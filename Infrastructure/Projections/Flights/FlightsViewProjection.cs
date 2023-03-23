@@ -1,9 +1,9 @@
-using Application.Flights.Events;
+using Application.Flights.Queries;
 using Domain;
 using Domain.Events;
 using Marten.Events.Projections;
 
-namespace Application.Flights.Queries.Views;
+namespace Infrastructure.Projections.Flights;
 
 public class FlightsViewProjection : MultiStreamProjection<FlightsView, string>
 {

@@ -16,5 +16,5 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.MapGet("/flights/{airport}", async (string airport, IMediator mediator) =>
-    await mediator.Send(new GetFlights(airport)));
+    await mediator.Send(new GetFlights(airport.ToUpper())));
 app.Run();

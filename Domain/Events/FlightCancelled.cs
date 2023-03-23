@@ -1,5 +1,4 @@
-using MediatR;
 
 namespace Domain.Events;
 
-public record FlightCancelled(long Id, string FlightId, string Airport) : INotification;
+public record FlightCancelled(string Id, string FlightId, string Airport) : IEvent;
